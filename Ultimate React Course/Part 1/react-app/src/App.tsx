@@ -1,21 +1,21 @@
+import { useState } from "react";
 import Alert from "./components/Alert";
-import ListGroup from "./components/ListGroup";
+import Button from "./components/Button";
 
 function App() {
-  let items = ["New York", "London", "Paris", "Tokyo", "Sydney"];
-
-  const handleSelectItem = (item: string) => {
-    console.log(item);
-  };
+  const [alertVisible, setAlertVisibility] = useState(false);
 
   return (
     <div>
-      <Alert />
-      <ListGroup
-        items={items}
-        heading="Cities"
-        onSelectItem={handleSelectItem}
-      />
+      {alertVisible && (
+        <Alert onClose={() => setAlertVisibility(false)}>
+          <strong>Holy guacamole!</strong> You should check in on some of those
+          fields below.
+        </Alert>
+      )}
+      <Button color="primary" onClick={() => setAlertVisibility(true)}>
+        My Button
+      </Button>
     </div>
   );
 }

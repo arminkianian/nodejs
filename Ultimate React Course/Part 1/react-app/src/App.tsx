@@ -1,21 +1,10 @@
-import { useState } from "react";
-import Alert from "./components/Alert";
-import Button from "./components/Button";
+import Like from "./components/Like";
+import "./App.css";
 
 function App() {
-  const [alertVisible, setAlertVisibility] = useState(false);
-
   return (
     <div>
-      {alertVisible && (
-        <Alert onClose={() => setAlertVisibility(false)}>
-          <strong>Holy guacamole!</strong> You should check in on some of those
-          fields below.
-        </Alert>
-      )}
-      <Button color="primary" onClick={() => setAlertVisibility(true)}>
-        My Button
-      </Button>
+      <Like onClick={() => console.log("Liked!")} />
     </div>
   );
 }

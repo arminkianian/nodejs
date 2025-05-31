@@ -1,12 +1,8 @@
-import Like from "./components/Like";
 import "./App.css";
+import ExpenseTracker from "./expense-tracker/ExpenseTracker";
 
 function App() {
-  return (
-    <div>
-      <Like onClick={() => console.log("Liked!")} />
-    </div>
-  );
+  return <ExpenseTracker />;
 }
 
 export default App;

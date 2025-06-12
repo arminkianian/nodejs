@@ -1,12 +1,7 @@
-import { Button, HStack } from "@chakra-ui/react";
+import { Button, ButtonGroup } from "@chakra-ui/react";
 
 function App() {
-  return (
-    <HStack>
-      <Button color={"blue"}>Click me</Button>
-      <Button>Click me</Button>
-    </HStack>
-  );
+  return <Button colorScheme="blue">Button</Button>;
 }
 
 export default App;

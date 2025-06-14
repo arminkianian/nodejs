@@ -1,6 +1,5 @@
 import { Heading } from "@chakra-ui/react";
 import { h1 } from "framer-motion/client";
-import React from "react";
 import type { GameQuery } from "../App";
 
 interface Props {

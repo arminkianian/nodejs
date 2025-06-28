@@ -3,13 +3,28 @@ import { FormEvent, FormEventHandler, useRef } from "react";
 import { Todo } from "./hooks/useTodos";
 import axios from "axios";
 
+interface AddTodoContext {
+  previousTodos: Todo[];
+}
+
 const TodoForm = () => {
   const queryClient = useQueryClient();
-  const addTodo = useMutation<Todo, Error, Todo>({
+  const addTodo = useMutation<Todo, Error, Todo, AddTodoContext>({
     mutationFn: (todo: Todo) =>
       axios
-        .post<Todo>("https://jsonplaceholder.typicode.com/todos", todo)
+        .post<Todo>("https://jsonplaceholder.typicode.com/todosx", todo)
         .then((res) => res.data),
+    onMutate: (newTodo) => {
+      const previousTodos = queryClient.getQueryData<Todo[]>(["todos"]) || [];
+      // before our mutation are executed
+      // we should update the Query Cache right away
+      queryClient.setQueryData<Todo[]>(["todos"], (todos) => [
+        newTodo,
+        ...(todos || []),
+      ]);
+
+      return { previousTodos };
+    },
     onSuccess: (savedTodo, newTodo) => {
       // we have 2 options to update the list:
       // 1. Approach: Invalidating the Cache
@@ -17,16 +32,18 @@ const TodoForm = () => {
       // queryClient.invalidateQueries({
       //   queryKey: ['todos']
       // })
-
       // 2. Approach: Updating the data in the cache directly
-      queryClient.setQueryData<Todo[]>(["todos"], (todos) => [
-        savedTodo,
-        ...(todos || []),
-      ]);
-
+      queryClient.setQueryData<Todo[]>(["todos"], (todos) =>
+        todos?.map((todo) => (todo === newTodo ? savedTodo : todo))
+      );
       if (ref.current) {
         ref.current.value = "";
       }
+    },
+    onError: (error, newTodo, context) => {
+      if (!context) return;
+
+      queryClient.setQueryData<Todo[]>(["todos"], context.previousTodos);
     },
   });
 

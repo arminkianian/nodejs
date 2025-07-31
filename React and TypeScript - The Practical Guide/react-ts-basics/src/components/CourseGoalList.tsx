@@ -19,7 +19,7 @@ const CourseGoalList = ({ goals, onDelete }: Props) => {
 
   if (goals.length >= 4) {
     warningBox = (
-      <InfoBox mode="warning">
+      <InfoBox mode="warning" severity="medium">
         You're collecting a lot of goals. Don't put too much on your plate!
       </InfoBox>
     );

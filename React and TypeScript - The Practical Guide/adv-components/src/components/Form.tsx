@@ -1,9 +1,24 @@
-import React, { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, FormEvent } from "react";
 
-type FormProps = {} & ComponentPropsWithoutRef<"form">;
+type FormProps = {
+  onSave: (value: unknown) => void;
+} & ComponentPropsWithoutRef<"form">;
 
-const Form = (props: FormProps) => {
-  return <form {...props}>{props.children}</form>;
+const Form = ({ onSave, children, ...otherProps }: FormProps) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData);
+
+    onSave(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} {...otherProps}>
+      {children}
+    </form>
+  );
 };
 
 export default Form;
